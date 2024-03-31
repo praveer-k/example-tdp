@@ -33,8 +33,6 @@ jobs:
 
       - name: Build and upload artifacts
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          echo "Latest tag is $LATEST_TAG"
           cat auth.json
           poetry shell
           poetry install
