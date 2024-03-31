@@ -1,0 +1,22 @@
+[tool.pytest]
+testpaths = ["tests"]
+
+[tool.poetry]
+name = "task-script"
+version = "0.1.0"
+description = ""
+authors = ["Praveer Kumar <praveerkumar17@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ts-sdk = "^2.0.0"
+pandas = "^2.2.1"
+kaggle = "^1.6.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

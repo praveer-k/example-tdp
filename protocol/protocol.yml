@@ -1,0 +1,47 @@
+protocolSchema: "v3"
+name: "Hello World - v3 protocol"
+description: "Protocol that prints Hello World to TDP Console"
+
+config:
+  labels_json:
+    label: "Labels that can be added to file"
+    description: "A json of labels that can be added to a file"
+    type: object
+    required: false
+  kaggle_username:
+    label: "Kaggle Username"
+    description: "Kaggle Username"
+    type: string
+    required: true
+  kaggle_api_key:
+    label: "Kaggle API Key"
+    description: "Kaggle API Key"
+    type: secret
+    required: true
+
+steps:
+  - id: hello-world-step
+    task:
+      namespace: private-interview-praveer
+      slug: task-script
+      version: v1.0.0
+      function: print-hello-world
+  - id: decorate-input-file-step
+    task:
+      namespace: private-interview-praveer
+      slug: task-script
+      version: v1.0.0
+      function: decorate-input-file
+    input:
+      input_file_pointer: $( workflow.inputFile )
+      labels_json: $( config.labels_json )
+  - id: push-data-step
+    task:
+      namespace: private-interview-praveer
+      slug: task-script
+      version: v1.0.0
+      function: push-data
+    input:
+      input_file_pointer: $( workflow.inputFile )
+      kaggle_username: $( config.kaggle_username )
+      kaggle_api_key: $( config.kaggle_api_key )

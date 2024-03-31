@@ -1,0 +1,18 @@
+{
+    "language": "python",
+    "runtime": "python3.11",
+    "functions": [
+        {
+            "slug": "print-hello-world",
+            "function": "main.print_message"
+        },
+        {
+            "slug": "decorate-input-file",
+            "function": "main.decorate"
+        },
+        {
+            "slug": "push-data",
+            "function": "main.push"
+        }
+    ]
+}
