@@ -23,7 +23,7 @@ def csv_to_json(input: dict, context: Context) -> tuple[str, dict]:
     file_name = context.get_file_name(input_file_pointer)
     data = df.to_dict(orient='records')
     print(f"File name: {file_name}")
-    return file_name, data
+    return file_name, data, label_mapping
 
 # Add this new function
 def push_data(input: dict, context: Context) -> dict:
@@ -43,7 +43,7 @@ def push_data(input: dict, context: Context) -> dict:
 
     # Kaggle Specific
     # Pull out the data from the PROCESSED file and save as a temporary file
-    file_name, data = csv_to_json(input, context)
+    file_name, data, label_mapping = csv_to_json(input, context)
     formatted_data = {}
     formatted_data["data"] = data
 
@@ -69,3 +69,13 @@ def push_data(input: dict, context: Context) -> dict:
     # Kaggle Specific
     # Upload data to Kaggle. Uses OS environment variables
     os.system("kaggle datasets create -p .")
+
+    print("Saving PROCESSED file")
+    saved_processed = context.write_file(
+        content=json.dumps(formatted_data, indent=2),
+        file_name="processed_demo.json",
+        file_category="PROCESSED",
+    )
+
+    print("'enrich_input_file' completed")
+    return saved_processed
