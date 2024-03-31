@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - '*'
 
 jobs:
   build:
@@ -38,5 +36,7 @@ jobs:
           LATEST_TAG=$(git describe --tags --abbrev=0)
           echo "Latest tag is $LATEST_TAG"
           cat auth.json
-          poetry run ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./auth.json
-          poetry run ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./auth.json
+          poetry shell
+          poetry install
+          ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./auth.json
+          ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./auth.json
