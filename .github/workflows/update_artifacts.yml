@@ -45,5 +45,5 @@ jobs:
         run: |
           cat auth.json
           poetry show
-          ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./auth.json
-          ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./auth.json
+          poetry run ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./auth.json
+          poetry run ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./auth.json
