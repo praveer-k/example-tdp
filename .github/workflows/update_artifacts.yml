@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -32,5 +31,6 @@ jobs:
 
       - name: Build and upload artifacts
         run: |
-          poetry run ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./authentication/ts-sdk-cfg.json
-          poetry run ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./authentication/ts-sdk-cfg.json
+          latest_tag=$(git describe --tags --abbrev=0)
+          poetry run ts-sdk put task-script private-interview-praveer task-script "$latest_tag" ./task-script -c ./authentication/ts-sdk-cfg.json
+          poetry run ts-sdk put protocol private-interview-praveer task-script "$latest_tag" ./protocol -c ./authentication/ts-sdk-cfg.json
