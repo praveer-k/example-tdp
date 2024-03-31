@@ -26,11 +26,15 @@ jobs:
           pip install poetry
           poetry install
 
+      - name: setup environment
+        run: |
+          echo "${{ secrets.TS_SDK_CONFIG }}" > auth.json
+
       - name: Run tests
         run: poetry run pytest
 
       - name: Build and upload artifacts
         run: |
           latest_tag=$(git describe --tags --abbrev=0)
-          poetry run ts-sdk put task-script private-interview-praveer task-script "$latest_tag" ./task-script -c ./authentication/ts-sdk-cfg.json
-          poetry run ts-sdk put protocol private-interview-praveer task-script "$latest_tag" ./protocol -c ./authentication/ts-sdk-cfg.json
+          poetry run ts-sdk put task-script private-interview-praveer task-script "$latest_tag" ./task-script -c ./auth.json
+          poetry run ts-sdk put protocol private-interview-praveer task-script "$latest_tag" ./protocol -c ./auth.json
