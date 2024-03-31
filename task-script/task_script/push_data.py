@@ -1,7 +1,7 @@
 # Add new import statement
 import os, json
 import pandas as pd
-from ts_sdk.task.__task_script_runner import Context, File
+from ts_sdk.task.__task_script_runner import Context
 
 def csv_to_json(input: dict, context: Context) -> tuple[str, dict]:
     print("Process file data")

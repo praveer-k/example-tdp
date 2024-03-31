@@ -36,5 +36,5 @@ jobs:
         run: |
           cat auth.json
           poetry show
-          poetry run ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f -c ./auth.json
-          poetry run ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f -c ./auth.json
+          poetry run ts-sdk put task-script private-interview-praveer task-script v1.0.0 ./task-script -f --org "${{ secrets.TS_ORG }}" --api-url "${{ secrets.TS_API_URL }}" --auth-token "${{ secrets.TS_AUTH_TOKEN }}"
+          poetry run ts-sdk put protocol private-interview-praveer task-script v1.0.0 ./protocol -f --org "${{ secrets.TS_ORG }}" --api-url "${{ secrets.TS_API_URL }}" --auth-token "${{ secrets.TS_AUTH_TOKEN }}"
