@@ -35,6 +35,8 @@ jobs:
 
       - name: Build and upload artifacts
         run: |
-          latest_tag=$(git describe --tags --abbrev=0)
-          poetry run ts-sdk put task-script private-interview-praveer task-script "$latest_tag" ./task-script -c ./auth.json
-          poetry run ts-sdk put protocol private-interview-praveer task-script "$latest_tag" ./protocol -c ./auth.json
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          echo "Latest tag is $LATEST_TAG"
+          cat auth.json
+          poetry run ts-sdk put task-script private-interview-praveer task-script "$LATEST_TAG" ./task-script -c ./auth.json
+          poetry run ts-sdk put protocol private-interview-praveer task-script "$LATEST_TAG" ./protocol -c ./auth.json
