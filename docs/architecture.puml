@@ -1,0 +1,53 @@
+@startuml Tetrascience Sequence Diagram
+!theme plain
+skinparam backgroundColor #F5F5F5
+
+title Tetrascience self service data pipelines - Sequence Diagram
+
+participant Admin
+participant User
+participant Organization
+participant TS_SDK
+participant ServiceUser
+participant FileLogAgent
+participant CustomScript
+participant MLPlatform
+
+box API #aliceblue
+    participant OrganizationManager
+    participant AuthenticationManager
+    participant AgentManager
+    participant ArtifactsManager
+    participant PipelineManager
+    participant WorkflowManager
+    participant StorageManager
+    participant LoggingManager
+    participant AlertManager
+end box
+
+Admin -> OrganizationManager: Create Organization
+Admin -> User: Associate User to Organization
+User <--> Organization: Associated User to Organization
+User -> OrganizationManager: Create Service User
+User -> AgentManager: Create Agent
+User -> FileLogAgent: Associate Agent to FileLogAgent
+FileLogAgent <--> AgentManager: Give FileLogAgent access to Storage Uploads
+FileLogAgent -> StorageManager: Upload File on change to Storage on Change
+User -> TS_SDK: Trigger Upload custom data harmonization and transformation scripts
+TS_SDK <--> ServiceUser: Communicate using Service User
+ServiceUser -> AuthenticationManager: Authenticate
+
+TS_SDK -> ServiceUser: Trigger task-script Upload
+ServiceUser -> ArtifactsManager: Upload task-script
+TS_SDK -> ServiceUser: Trigger protocol Upload
+ServiceUser -> ArtifactsManager: Upload protocol
+
+PipelineManager -> CustomScript: Trigger custom script execution on given condition using WorkflowManager
+PipelineManager <--> WorkflowManager: Communicate with \nWorkflowManager\n to trigger custom \nscript execution
+WorkflowManager <--> CustomScript: Monitor execution of custom script
+WorkflowManager -> LoggingManager: Log Audit trail
+WorkflowManager -> AlertManager: Send alert on failure
+CustomScript -> StorageManager: Store the transformed data
+CustomScript -> MLPlatform: Upload to AI/ML Platform
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml Data Science Model Workflow
+!theme plain
+skinparam backgroundColor #F5F5F5
+
+title Data Science Model Workflow - Sequence Diagram
+
+participant Notebook
+participant MLFlow
+participant Storage
+participant API
+participant User
+
+Notebook -> MLFlow: Log experiment
+Notebook -> MLFlow: Log params
+Notebook -> MLFlow: Log metrics
+Notebook -> MLFlow: Log model
+activate MLFlow
+
+MLFlow -> Storage: Store Artifacts
+MLFlow -> MLFlow: Register model
+
+MLFlow -> API: Load latest registered model using experiment name
+API --> MLFlow: Request to load artifacts
+MLFlow --> API: Return artifacts and model
+activate API
+
+User <--> API: Request/Response to predict
+
+@enduml

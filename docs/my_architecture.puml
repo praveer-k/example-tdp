@@ -1,0 +1,46 @@
+@startuml Old Architecture - Sequence Diagram
+!theme plain
+skinparam backgroundColor #F5F5F5
+
+title Old Architecture - Sequence Diagram
+
+participant User
+participant Scheduler
+participant Scraper
+participant ExternalAPI
+participant DataLake
+participant Database
+participant ElasticSearch
+participant BI
+
+box API #aliceblue
+    participant AuthenticationManager
+    participant TranslationService
+    participant ParsingService
+    participant ImageProcessingService
+    participant TaggingService
+    participant ObjectSearchService
+    participant ObjectEditingService
+end box
+
+Scheduler -> Scraper: Trigger data collection batch job
+Scraper -> ExternalAPI: Fetch data from external API / Web pages
+Scraper <--> AuthenticationManager: Authenticate using service account JWT token
+Scraper <--> TranslationService: Translate web page content to english
+Scraper <--> ParsingService: Parse data from web page
+Scraper <--> ImageProcessingService: Push data to `image upload to cloud storage` using queuing service
+Scraper <--> TaggingService: Tag web page content using NLP
+Scraper -> Database: Store parsed data
+Scraper <- Database: Return success/failure status with id
+Scraper -> DataLake: using id Upload Webpage to a cloud Storage bucket
+Scheduler -> ElasticSearch: Trigger service to sync data with elastic search 
+ElasticSearch <--> Database: Sync data to search
+...
+...
+...
+
+User --> ObjectSearchService: Search for data
+User -> ObjectEditingService: Edit data
+BI -> Database: Fetch data for reporting
+
+@enduml

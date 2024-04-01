@@ -1,0 +1,29 @@
+@startuml Tetrascience Sequence Diagram
+!theme plain
+skinparam backgroundColor #F5F5F5
+
+title Tetrascience SSP Hello World - Sequence Diagram
+
+participant TS_SDK
+participant ServiceUser
+participant CustomScript
+
+box API #aliceblue
+    participant ArtifactsManager
+    participant PipelineManager
+    participant WorkflowManager
+    participant LoggingManager
+end box
+
+TS_SDK <--> ServiceUser: Communicate using Service User
+
+TS_SDK -> ServiceUser: Trigger task-script Upload
+ServiceUser -> ArtifactsManager: Upload task-script
+TS_SDK -> ServiceUser: Trigger protocol Upload
+ServiceUser -> ArtifactsManager: Upload protocol
+
+PipelineManager -> CustomScript: Trigger custom script execution \non given condition using \nWorkflowManager/Protocol FileProcessing
+PipelineManager <--> WorkflowManager: Communicate with \nWorkflowManager\n to trigger custom \nscript execution
+WorkflowManager <--> CustomScript: Monitor execution of custom script
+CustomScript -> LoggingManager: Log Hello World
+@enduml
